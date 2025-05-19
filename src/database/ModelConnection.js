@@ -1,6 +1,6 @@
 import sequelize, { Sequelize } from "sequelize";
-import DatabaseConfig from "../src/config/Database.js";
-import Usuario from "../src/models/Usuario.js";
+import databaseConfig from "../config/Database.js";
+import Usuario from "../models/Usuario.js";
 
 const models = [Usuario];
 
