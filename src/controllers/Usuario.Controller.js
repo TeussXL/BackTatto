@@ -19,6 +19,49 @@ class UsuarioController {
             return res.status(500).json({ error: 'Erro ao listar usuários' })
         }
     }
-}
 
-export default new UsuarioController()
+    async show (req, res) {
+        const { email } = req.params
+        try {
+            const usuario = await Usuario.findOne({ where: { email } })
+            if (!usuario) {
+                return res.status(404).json({ error: 'Usuário não encontrado' })
+            }
+            return res.status(200).json(usuario)
+        } catch (error) {
+            return res.status(500).json({ error: 'Erro ao buscar usuário' })
+        }
+        
+    }
+    async update(req, res) {
+        const { email } = req.params
+        const { nome, senha } = req.body
+        try {
+            const usuario = await Usuario.findOne({ where: { email } })
+            if (!usuario) {
+                return res.status(404).json({ error: 'Usuário não encontrado' })
+            }
+            usuario.nome = nome || usuario.nome
+            usuario.senha = senha || usuario.senha
+            await usuario.save()
+            return res.status(200).json(usuario)
+        } catch (error) {
+            return res.status(500).json({ error: 'Erro ao atualizar usuário' })
+        }
+    }
+    async delete(req, res) {
+        const { id } = req.params
+        try {
+            const usuario = await Usuario.findOne({ where: { id } })
+            if (!usuario) {
+                return res.status(404).json({ error: 'Usuário não encontrado' })
+            }
+            await usuario.destroy()
+            return res.status(200).json({ message: 'Usuário excluído com sucesso' })
+        } catch (error) {
+            return res.status(500).json({ error: 'Erro ao excluir usuário' })
+        }
+    }
+}
+        export default new UsuarioController()
+        
